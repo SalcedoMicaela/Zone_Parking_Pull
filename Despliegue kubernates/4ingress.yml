@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-publicaciones-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: parkin.local
+      http:
+        paths:
+          - path: /tickets
+            pathType: Prefix
+            backend:
+              service:
+                name: ticket-svc
+                port:
+                  number: 80
+          - path: /zona
+            pathType: Prefix
+            backend:
+              service:
+                name: zone-core-svc
+                port:
+                  number: 80
+          - path: /clientes
+            pathType: Prefix
+            backend:
+              service:
+                name: ms-clientes-svc
+                port:
+                  number: 80
+          - path: /notificaciones
+            pathType: Prefix
+            backend:
+              service:
+                name: notification-svc
+                port:
+                  number: 80

@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+
+  postgres-users:
+    image: postgres:16-alpine
+    container_name: parkin_users_db
+    environment:
+      POSTGRES_DB: db_parkin_users
+      POSTGRES_USER: parkin
+      POSTGRES_PASSWORD: qwerty123
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_users_data:/var/lib/postgresql/data
+
+  users-service:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: parkin-users-app
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres-users
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-users:5432/db_parkin_users
+      SPRING_DATASOURCE_USERNAME: parkin
+      SPRING_DATASOURCE_PASSWORD: qwerty123
